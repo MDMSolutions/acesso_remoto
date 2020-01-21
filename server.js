@@ -1,3 +1,4 @@
+const PORT = process.env.PORT || 3000;
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
@@ -24,6 +25,6 @@ io.on('connection', function (socket) {
 
 });
 
-http.listen(80, function () {
-  console.log('listening on *:80');
+http.listen(PORT, function () {
+  console.log('listening on *:' + PORT);
 });
