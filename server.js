@@ -13,14 +13,18 @@ io.on('connection', function (socket) {
   socket.on('create or join room', (roomName) => {
     roomGeneral = roomName
     socket.join(roomGeneral);
+
+    console.log(`connected to room: ${roomGeneral}`)
   });
 
   socket.on('answer an offer', (answer) => {
     io.to(roomGeneral).emit('answer', answer)
+
+    console.log(`answer emited to room: ${roomGeneral}`)
   })
 
   socket.on('disconnect', function(){
-    console.log('disconnected')
+    console.log(`disconnected from ${roomGeneral}`)
   });
 
 });
