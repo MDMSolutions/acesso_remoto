@@ -13,6 +13,7 @@ io.on('connection', function (socket) {
   socket.on('create or join room', (roomName) => {
     roomGeneral = roomName
     socket.join(roomGeneral);
+    socket.emit('joined to room', roomGeneral)
 
     console.log(`connected to room: ${roomGeneral}`)
   });
