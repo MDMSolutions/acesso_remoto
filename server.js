@@ -21,6 +21,7 @@ io.on('connection', function (socket) {
   socket.on('answer an offer', (answer) => {
     io.to(roomGeneral).emit('answer', answer)
 
+    console.log(answer)
     console.log(`answer emited to room: ${roomGeneral}`)
   })
 
