@@ -4,9 +4,8 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 app.get('/', function (req, res) {
-  console.log(io.sockets)
   res.send(`
-    conexões - ${JSON.stringify(io.sockets.adapter.rooms)} --
+    conexões - ${Object.keys(io.sockets.adapter.rooms).toString()} --
   `);
 });
 
