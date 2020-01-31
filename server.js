@@ -5,7 +5,7 @@ var io = require('socket.io')(http);
 
 app.get('/', function (req, res) {
   res.send(`
-    conexões - ${Object.keys(io.sockets.adapter.rooms).toString()} --
+    conexões - ${Object.keys(io.sockets.adapter.rooms).join(" ### ")} --
   `);
 });
 
