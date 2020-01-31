@@ -3,20 +3,20 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   res.send(`
     conexões - ${Object.keys(io.sockets.adapter.rooms).join(" ### ")} --
   `);
 });
 
-io.on('connection', function (socket) {
+io.on('connection', socket => {
   let roomGeneral
-  
+
   socket.on('create or join room', (roomName) => {
     roomGeneral = roomName
     socket.join(roomGeneral, () => {
       socket.emit('joined to room', roomGeneral)
-  
+
       console.log(`connected to room: ${roomGeneral}`)
     });
   });
@@ -28,7 +28,7 @@ io.on('connection', function (socket) {
     console.log(`answer emited to room: ${roomGeneral}`)
   })
 
-  socket.on('disconnect', function(){
+  socket.on('disconnect', () => {
     console.log(`disconnected from ${roomGeneral}`)
   });
 
