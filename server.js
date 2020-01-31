@@ -6,7 +6,7 @@ var io = require('socket.io')(http);
 app.get('/', function (req, res) {
   console.log(io.sockets)
   res.send(`
-    conexões - ${io.sockets.adapter.rooms} --
+    conexões - ${JSON.stringify(io.sockets.adapter.rooms)} --
   `);
 });
 
