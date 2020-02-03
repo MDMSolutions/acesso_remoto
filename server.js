@@ -24,6 +24,9 @@ io.on('connection', socket => {
   socket.on('answer an offer', (answer) => {
     io.to(roomGeneral).emit('answer', answer)
 
+    io.to(roomGeneral).emit('test')
+    io.emit('testall', 'everyone'); // short form
+
     console.log("Answer:", answer)
     console.log(`answer emited to room: ${roomGeneral}`)
   })
