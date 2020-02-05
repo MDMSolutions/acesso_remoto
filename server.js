@@ -15,17 +15,21 @@ io.on('connection', socket => {
   socket.on('create or join room', (roomName) => {
     roomGeneral = roomName
     socket.join(roomGeneral, () => {
-      socket.emit('joined to room', roomGeneral)
+      io.to(roomGeneral).emit('joined to room', roomGeneral)
 
       console.log(`connected to room: ${roomGeneral}`)
     });
   });
 
-  socket.on('answer an offer', (answer) => {
-    io.to(roomGeneral).emit('answer', answer)
+  socket.on("offer", offer => {
+    io.to(roomGeneral).emit('receive offer', offer)
 
-    io.to(roomGeneral).emit('test')
-    io.emit('testall', 'everyone'); // short form
+    console.log("Offer:", offer)
+    console.log(`offer emited to room: ${roomGeneral}`)
+  })
+
+  socket.on('answer', (answer) => {
+    io.to(roomGeneral).emit('receive answer', answer)
 
     console.log("Answer:", answer)
     console.log(`answer emited to room: ${roomGeneral}`)
