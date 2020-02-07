@@ -1,14 +1,18 @@
 const PORT = process.env.PORT || 3000;
 var app = require('express')();
+const path = require('path');
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 app.get('/', (req, res) => {
-  res.sendFile('index.html');
-  // res.send(`
-  //   conexões - ${Object.keys(io.sockets.adapter.rooms).join(" ### ")} --
-  // `);
+  res.send(`
+    conexões - ${Object.keys(io.sockets.adapter.rooms).join(" ### ")} --
+  `);
 });
+
+app.get('/peer', (req, res) => {
+  res.sendFile(path.join(__dirname+'/index.html'));
+})
 
 io.on('connection', socket => {
   let roomGeneral
