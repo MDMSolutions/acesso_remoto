@@ -14,6 +14,8 @@ app.get('/peer', (req, res) => {
   res.sendFile(path.join(__dirname+'/index.html'));
 })
 
+app.use(express.static('public'))
+
 io.on('connection', socket => {
   let roomGeneral
 
