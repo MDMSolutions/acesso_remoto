@@ -4,9 +4,10 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 app.get('/', (req, res) => {
-  res.send(`
-    conexões - ${Object.keys(io.sockets.adapter.rooms).join(" ### ")} --
-  `);
+  res.sendFile('index.html');
+  // res.send(`
+  //   conexões - ${Object.keys(io.sockets.adapter.rooms).join(" ### ")} --
+  // `);
 });
 
 io.on('connection', socket => {

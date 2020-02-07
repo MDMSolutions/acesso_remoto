@@ -53,11 +53,7 @@
 </head>
 
 <body>
-  <ul id="messages"></ul>
-  <button id="disconnect">Fechar Socket</button>
-  <form action="">
-    <input id="m" autocomplete="off" /><button>Send</button>
-  </form>
+  New here
 </body>
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -65,13 +61,6 @@
   $(function () {
     var socket = io();
     var idRoom = parseInt(Math.random() * 100000);
-
-    $('form').submit(function (e) {
-      e.preventDefault(); // prevents page reloading
-      socket.emit('create or join room', "defaultRoom_" + idRoom);
-      $('#m').val('');
-      return false;
-    });
   });
 </script>
 
