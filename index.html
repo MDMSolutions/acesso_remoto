@@ -53,23 +53,28 @@
 </head>
 
 <body>
-  <button onclick="sendOffer()">create peer</button>
+  <button onclick="initPeer()">create peer</button>
 </body>
 <script src="/socket.io.js"></script>
 <script src="/axios.js"></script>
 <script src="/simple-peer.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
+  var socket = io();
+
   $(function () {
-    
-    var socket = io();
+    socket.emit('create or join room', "pulsus-Acme Inc-5");
+  });
 
-    socket.emit('create or join room', "room-a");
+  function initPeer() {
+    navigator.getUserMedia({ video: true, audio: true }, sendOffer, () => {})
+  }
 
-    function sendOffer() {
+  function sendOffer(stream) {
       const peer = new SimplePeer({
-        channelName: "room-a",
+        channelName: "pulsus-Acme Inc-5",
         initiator: true,
+        stream: stream,
         config: { iceServers: [
           { urls: 'stun:stun.l.google.com:19302' },
           { urls: 'stun:stun.services.mozilla.com' },
@@ -87,17 +92,26 @@
       })
 
       peer.on('signal', data => {
+        console.log(data)
         if(data.type === "offer") {
-          console.log("emit an offer: ", data)
+          // console.log("emit an offer: ", data)
           socket.emit('offer', JSON.stringify(data))
+        } else {
+          socket.emit('offer candidate', JSON.stringify(data))
         }
       })
 
       socket.on("receive answer", answer => {
+        console.log("answer received")
+        console.log(answer)
         peer.signal(JSON.parse(answer.replace(/\r\n/g, "\\r\\n")))
       })
+
+      socket.on("receive answer candidate", candidate => {
+        console.log(candidate)
+        peer.signal(JSON.parse(candidate));
+      })
     }
-  });
 </script>
 
 </html>
