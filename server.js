@@ -58,6 +58,7 @@ io.on('connection', socket => {
   })
 
   socket.on('disconnect', () => {
+    io.to(roomGeneral).emit('instance disconnect')
     console.log(`disconnected from ${roomGeneral}`)
   });
 
