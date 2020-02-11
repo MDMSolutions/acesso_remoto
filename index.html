@@ -94,7 +94,6 @@
       peer.on('signal', data => {
         console.log(data)
         if(data.type === "offer") {
-          // console.log("emit an offer: ", data)
           socket.emit('offer', JSON.stringify(data))
         } else {
           socket.emit('offer candidate', JSON.stringify(data))
