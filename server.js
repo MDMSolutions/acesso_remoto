@@ -1,18 +1,20 @@
 const PORT = process.env.PORT || 5000;
-var express = require('express')
-var app = express();
+const express = require('express');
+const app = express();
 const path = require('path');
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+
+app.set('view engine', 'pug')
 
 app.get('/', (req, res) => {
-  res.send(`
-    conexões - ${Object.keys(io.sockets.adapter.rooms).join(" ### ")} --
-  `);
+  const rooms = Object.keys(io.sockets.adapter.rooms)
+  console.log(rooms)
+  res.render('health', {rooms})
 });
 
 app.get('/peer', (req, res) => {
-  res.sendFile(path.join(__dirname+'/index.html'));
+  res.render('peer')
 })
 
 app.use(express.static('public'))
