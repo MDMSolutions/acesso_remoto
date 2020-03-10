@@ -31,6 +31,10 @@ io.on('connection', socket => {
     });
   });
 
+  socket.on('leave room', (roomName) => {
+    socket.leave(roomName);
+  });
+
   socket.on("offer", offer => {
     io.to(roomGeneral).emit('receive offer', offer)
 
