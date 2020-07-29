@@ -17,10 +17,34 @@ app.get('/peer', (req, res) => {
   res.render('peer')
 })
 
+app.get('/create-room', (req, res) => {
+  res.render('createRoom')
+})
+
 app.use(express.static('public'))
 
 io.on('connection', socket => {
   let roomGeneral
+
+  socket.on('create room', (roomName) => {
+    io.of('/').in(roomName).clients((error, socketIds) => {
+      console.log('room name kick all', roomName)
+      if (error) throw error;
+    
+      socketIds.forEach(socketId => {
+        console.log('kick: ', socketId)
+        io.sockets.sockets[socketId].leave(roomName)
+      });
+    });
+
+    roomGeneral = roomName
+    socket.join(roomGeneral, () => {
+      io.to(roomGeneral).emit('joined to room', roomGeneral)
+
+      console.log(`connected to room: ${roomGeneral}`)
+    });
+  })
+  
 
   socket.on('create or join room', (roomName) => {
     roomGeneral = roomName
