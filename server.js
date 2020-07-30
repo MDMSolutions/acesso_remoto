@@ -35,6 +35,7 @@ io.on('connection', socket => {
         console.log('kick: ', socketId)
         io.sockets.sockets[socketId].leave(roomName)
       });
+      io.to(roomName).emit('disconnect')
     });
 
     roomGeneral = roomName
