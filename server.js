@@ -30,12 +30,12 @@ io.on('connection', socket => {
     io.of('/').in(roomName).clients((error, socketIds) => {
       console.log('room name kick all', roomName)
       if (error) throw error;
-    
+
+      io.to(roomName).emit('disconnect')
       socketIds.forEach(socketId => {
         console.log('kick: ', socketId)
         io.sockets.sockets[socketId].leave(roomName)
       });
-      io.to(roomName).emit('disconnect')
     });
 
     roomGeneral = roomName
