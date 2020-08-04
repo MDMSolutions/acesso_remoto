@@ -2,6 +2,10 @@ var socket = io();
 
 $(function () {
   socket.emit('create or join room', "pulsus-Acme Inc-5");
+
+  socket.on("disconnect", some => {
+    console.log("disconectado")
+  })
 });
 
 function initPeer() {
