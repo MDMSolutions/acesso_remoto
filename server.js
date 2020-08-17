@@ -45,12 +45,12 @@ io.on('connection', socket => {
       console.log(`connected to room: ${roomGeneral}`)
     });
   })
-  
 
   socket.on('create or join room', (roomName) => {
     roomGeneral = roomName
     socket.join(roomGeneral, () => {
       io.to(roomGeneral).emit('joined to room', roomGeneral)
+      io.to(roomGeneral).emit('device is connected')
 
       console.log(`connected to room: ${roomGeneral}`)
     });
@@ -65,6 +65,13 @@ io.on('connection', socket => {
 
     console.log("Offer:", offer)
     console.log(`offer emited to room: ${roomGeneral}`)
+  })
+
+  socket.on("request offer", offer => {
+    io.to(roomGeneral).emit('create offer')
+
+    console.log("Emit: create offer")
+    console.log(`Emit: create offer to room: ${roomGeneral}`)
   })
 
   socket.on("offer candidate", candidate => {
