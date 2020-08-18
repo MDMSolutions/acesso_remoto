@@ -40,9 +40,9 @@ io.on('connection', socket => {
 
     roomGeneral = roomName
     socket.join(roomGeneral, () => {
-      io.to(roomGeneral).emit('joined to room', roomGeneral)
+      io.to(roomGeneral).emit('create room', roomGeneral)
 
-      console.log(`connected to room: ${roomGeneral}`)
+      console.log(`web connected to room: ${roomGeneral}`)
     });
   })
 
@@ -52,7 +52,7 @@ io.on('connection', socket => {
       io.to(roomGeneral).emit('joined to room', roomGeneral)
       io.to(roomGeneral).emit('device is connected')
 
-      console.log(`connected to room: ${roomGeneral}`)
+      console.log(`device connected to room: ${roomGeneral}`)
     });
   });
 
