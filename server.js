@@ -35,30 +35,30 @@ io.on('connection', socket => {
       socketIds.forEach(socketId => {
         console.log('kick: ', socketId)
         io.sockets.sockets[socketId].leave(roomName)
-      });
-    });
+      })
+    })
 
     roomGeneral = roomName
     socket.join(roomGeneral, () => {
       io.to(roomGeneral).emit('create room', roomGeneral)
 
       console.log(`web connected to room: ${roomGeneral}`)
-    });
+    })
   })
 
   socket.on('create or join room', (roomName) => {
     roomGeneral = roomName
     socket.join(roomGeneral, () => {
       io.to(roomGeneral).emit('joined to room', roomGeneral)
-      io.to(roomGeneral).emit('device is connected')
+      io.to(roomGeneral).emit('device is connected', roomGeneral)
 
       console.log(`device connected to room: ${roomGeneral}`)
     });
-  });
+  })
 
   socket.on('leave room', (roomName) => {
     socket.leave(roomName);
-  });
+  })
 
   socket.on("offer", offer => {
     io.to(roomGeneral).emit('receive offer', offer)
