@@ -51,8 +51,10 @@ io.on('connection', socket => {
     roomGeneral = roomName
 
     io.of('/').in(roomName).clients((error, socketIds) => {
-      console.log(socket)
-      console.log(socketIds)
+      console.log("CREATE OR JOIN - #############")
+      console.log("sockets", socket.sockets)
+      console.log("socketID", socketIds)
+      console.log("CREATE OR JOIN END - #############")
     })
 
     socket.join(roomGeneral, () => {
