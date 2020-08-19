@@ -51,21 +51,18 @@ io.on('connection', socket => {
     roomGeneral = roomName
 
     io.of('/').in(roomName).clients((error, socketIds) => {
-      for (let socketId in socket.adapter.sids) {
-
+      if (socketIds.length < 2) {
+        socket.join(roomGeneral, () => {
+          io.to(roomGeneral).emit('joined to room', roomGeneral)
+          io.to(roomGeneral).emit('device is connected', roomGeneral)
+    
+          console.log(`device connected to room: ${roomGeneral}`)
+        });
       }
-      console.log("CREATE OR JOIN - #############")
-      console.log("rooms", socket.rooms)
-      console.log("socketID", socketIds)
-      console.log("CREATE OR JOIN END - #############")
+      else {
+        console.log("### not emmited")
+      }
     })
-
-    socket.join(roomGeneral, () => {
-      io.to(roomGeneral).emit('joined to room', roomGeneral)
-      io.to(roomGeneral).emit('device is connected', roomGeneral)
-
-      console.log(`device connected to room: ${roomGeneral}`)
-    });
   })
 
   socket.on('leave room', (roomName) => {
