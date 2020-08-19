@@ -48,6 +48,12 @@ io.on('connection', socket => {
 
   socket.on('create or join room', (roomName) => {
     roomGeneral = roomName
+
+    io.of('/').in(roomName).clients((error, socketIds) => {
+      console.log(socket)
+      console.log(socketIds)
+    })
+
     socket.join(roomGeneral, () => {
       io.to(roomGeneral).emit('joined to room', roomGeneral)
       io.to(roomGeneral).emit('device is connected', roomGeneral)
