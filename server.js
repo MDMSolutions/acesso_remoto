@@ -108,7 +108,6 @@ function kickAllFromRoom(io, roomName) {
 
     io.to(roomName).emit('disconnect')
     socketIds.forEach(socketId => {
-      console.log(socket)
       console.log('kick: ', socketId)
       io.sockets.sockets[socketId].leave(roomName)
     })
