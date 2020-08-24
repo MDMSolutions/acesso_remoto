@@ -27,17 +27,7 @@ io.on('connection', socket => {
   let roomGeneral
 
   socket.on('create room', (roomName) => {
-    io.of('/').in(roomName).clients((error, socketIds) => {
-      console.log('room name kick all', roomName)
-      if (error) throw error;
-
-      io.to(roomName).emit('disconnect')
-      socketIds.forEach(socketId => {
-        console.log(socket)
-        console.log('kick: ', socketId)
-        io.sockets.sockets[socketId].leave(roomName)
-      })
-    })
+    kickAllFromRoom(io, roomName)
 
     roomGeneral = roomName
     socket.join(roomGeneral, () => {
@@ -45,7 +35,7 @@ io.on('connection', socket => {
 
       console.log(`web connected to room: ${roomGeneral}`)
     })
-  })
+  }) 
 
   socket.on('create or join room', (roomName) => {
     roomGeneral = roomName
@@ -53,14 +43,14 @@ io.on('connection', socket => {
     io.of('/').in(roomName).clients((error, socketIds) => {
       if (socketIds.length < 2) {
         socket.join(roomGeneral, () => {
-          io.to(roomGeneral).emit('joined to room', roomGeneral)
-          io.to(roomGeneral).emit('device is connected', roomGeneral)
+          // io.to(roomGeneral).emit('joined to room', roomGeneral)
+          io.to(roomGeneral).emit('create offer')
     
           console.log(`device connected to room: ${roomGeneral}`)
         });
       }
       else {
-        console.log("### not emmited")
+        console.log("don't request offer")
       }
     })
   })
@@ -76,12 +66,12 @@ io.on('connection', socket => {
     console.log(`offer emited to room: ${roomGeneral}`)
   })
 
-  socket.on("request offer", offer => {
-    io.to(roomGeneral).emit('create offer')
+  // socket.on("request offer", offer => {
+  //   io.to(roomGeneral).emit('create offer')
 
-    console.log("Emit: create offer")
-    console.log(`Emit: create offer to room: ${roomGeneral}`)
-  })
+  //   console.log("Emit: create offer")
+  //   console.log(`Emit: create offer to room: ${roomGeneral}`)
+  // })
 
   socket.on("offer candidate", candidate => {
     io.to(roomGeneral).emit('receive offer candidate', candidate)
@@ -110,6 +100,20 @@ io.on('connection', socket => {
   });
 
 });
+
+function kickAllFromRoom(io, roomName) {
+  io.of('/').in(roomName).clients((error, socketIds) => {
+    console.log('room name kick all', roomName)
+    if (error) throw error;
+
+    io.to(roomName).emit('disconnect')
+    socketIds.forEach(socketId => {
+      console.log(socket)
+      console.log('kick: ', socketId)
+      io.sockets.sockets[socketId].leave(roomName)
+    })
+  })
+}
 
 http.listen(PORT, function () {
   console.log('listening on *:' + PORT);
