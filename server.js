@@ -66,12 +66,12 @@ io.on('connection', socket => {
     console.log(`offer emited to room: ${roomGeneral}`)
   })
 
-  // socket.on("request offer", offer => {
-  //   io.to(roomGeneral).emit('create offer')
+  socket.on("request offer", offer => {
+    io.to(roomGeneral).emit('create offer')
 
-  //   console.log("Emit: create offer")
-  //   console.log(`Emit: create offer to room: ${roomGeneral}`)
-  // })
+    console.log("Emit: create offer")
+    console.log(`Emit: create offer to room: ${roomGeneral}`)
+  })
 
   socket.on("offer candidate", candidate => {
     io.to(roomGeneral).emit('receive offer candidate', candidate)
